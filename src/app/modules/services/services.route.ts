@@ -13,6 +13,8 @@ router.post('/',FileUploadHelper.upload.single('file'),(req:Request,res:Response
    req.body=serviceValidation.serviceValidationSchema.parse(JSON.parse(req.body.data))
    return serviceController.createService(req,res,next)
 });
+router.get('/',serviceController.getAllServices);
+router.get('/:id',serviceController.getSingleService);
 
 
 export const servicesRouter = router;

@@ -21,6 +21,8 @@ model User {
   updatedAt       DateTime          @updatedAt
   Services        Services[]
   BookedService   BookedService[]
+  Faqs            Faqs[]
+  Blog            Blog[]
 
   @@map("user")
 }
@@ -68,6 +70,31 @@ model BookedService {
   updatedAt DateTime   @updatedAt
 
   @@map("booked_services")
+}
+
+// FAQ model schema 
+model Faqs {
+  id       String @id @default(uuid())
+  question String
+  answer   String
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+
+  @@map("faqs")
+}
+
+// blog model shcema
+model Blog {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  image       String
+  authroId    String
+  user        User     @relation(fields: [authroId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("blog")
 }
 
 enum RoleEnum {
