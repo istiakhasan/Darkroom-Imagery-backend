@@ -1,5 +1,7 @@
 import express from 'express';
 import { AuthRouter } from '../modules/auth/auth.routes';
+import { bookedRouter } from '../modules/bookedService/bookedService.route';
+import { bookingSlots } from '../modules/bookingslots/bookingSlots.routes';
 import { categoryRouter } from '../modules/category/category.routes';
 import { servicesRouter } from '../modules/services/services.route';
 import { userRouter } from '../modules/users/users.routes';
@@ -22,6 +24,14 @@ const moduleRoutes = [
   {
     path: '/service',
     routes: servicesRouter,
+  },
+  {
+    path: '/service-slots',
+    routes: bookingSlots,
+  },
+  {
+    path: '/booked-service',
+    routes: bookedRouter,
   },
 
 ];

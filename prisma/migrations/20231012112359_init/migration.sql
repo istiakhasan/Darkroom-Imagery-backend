@@ -52,13 +52,46 @@ CREATE TABLE "booked_services" (
     "userId" TEXT NOT NULL,
     "serviceId" TEXT NOT NULL,
     "remarks" TEXT NOT NULL,
-    "toDate" TIMESTAMP(3) NOT NULL,
-    "formDate" TIMESTAMP(3) NOT NULL,
+    "startTime" TEXT NOT NULL,
+    "endTime" TEXT NOT NULL,
+    "date" TEXT NOT NULL,
     "status" "StatusEnum" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "booked_services_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "faqs" (
+    "id" TEXT NOT NULL,
+    "question" TEXT NOT NULL,
+    "answer" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "faqs_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "blog" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "authroId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "blog_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "slots" (
+    "id" TEXT NOT NULL,
+    "time" TEXT NOT NULL,
+    "serviceId" TEXT NOT NULL,
+
+    CONSTRAINT "slots_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -81,3 +114,12 @@ ALTER TABLE "booked_services" ADD CONSTRAINT "booked_services_userId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "booked_services" ADD CONSTRAINT "booked_services_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "faqs" ADD CONSTRAINT "faqs_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "blog" ADD CONSTRAINT "blog_authroId_fkey" FOREIGN KEY ("authroId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "slots" ADD CONSTRAINT "slots_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

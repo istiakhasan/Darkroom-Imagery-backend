@@ -81,9 +81,11 @@ const getSingleService = async (id: string) => {
   const result = await prisma.services.findUnique({
     where: {
       id: id,
+      
     },
     include: {
       user: true,
+      Slots:true  
     },
   });
 

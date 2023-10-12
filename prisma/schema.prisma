@@ -38,6 +38,7 @@ model Services {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   BookedService   BookedService[]
+  Slots           Slots[]
 
   @@map("services")
 }
@@ -61,8 +62,9 @@ model BookedService {
   userId    String
   serviceId String
   remarks   String
-  toDate    DateTime
-  formDate  DateTime
+  startTime String
+  endTime   String
+  date      String
   status    StatusEnum
   user      User       @relation(fields: [userId], references: [id])
   service   Services   @relation(fields: [serviceId], references: [id])
@@ -95,6 +97,15 @@ model Blog {
   updatedAt   DateTime @updatedAt
 
   @@map("blog")
+}
+
+model Slots {
+  id        String   @id @default(uuid())
+  time      String
+  service   Services @relation(fields: [serviceId], references: [id])
+  serviceId String
+
+  @@map("slots")
 }
 
 enum RoleEnum {
