@@ -13,11 +13,10 @@ model User {
   email           String            @unique
   password        String
   role            RoleEnum
-  contactNo       String
+  contactNo       String            @unique
   address         String
   profileImg      String
   reviewAndRating ReviewAndRating[]
- 
 
   @@map("user")
 }
@@ -25,9 +24,9 @@ model User {
 model Category {
   id    String @id @default(uuid())
   title String
+
   @@map("category")
 }
-
 
 model ReviewAndRating {
   id     String @id @default(uuid())
@@ -36,9 +35,9 @@ model ReviewAndRating {
   userId String
   bookId String
   user   User   @relation(fields: [userId], references: [id])
+
   @@map("review_and_rating")
 }
-
 
 enum RoleEnum {
   admin

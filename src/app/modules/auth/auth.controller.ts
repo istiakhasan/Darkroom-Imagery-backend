@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import config from '../../../config';
+import { FileUploadHelper } from '../../../helpers/FileUploadHelpers';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { SignUpService } from './auth.service';
@@ -9,6 +10,12 @@ export type ILoginResponse = {
   refreshToken?: string;
 };
 const signUP = catchAsync(async (req: Request, res: Response) => {
+  // console.log(req.file,req.body);
+  const file=req.file
+  const uploadImage:any=await FileUploadHelper.uploadCloudinary(file)
+  if(uploadImage){
+    req.body.profileImg=uploadImage?.secure_url
+  }
   const result = await SignUpService.signUp(req.body);
   sendResponse(res, {
     success: true,

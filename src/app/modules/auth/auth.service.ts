@@ -6,15 +6,18 @@ import ApiError from '../../../errors/ApiError';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
 
 export type ILoginUser = {
-  email: string;
+  contactNo: string | undefined;
   password: string;
 };
 const prisma = new PrismaClient();
 
 const signUp = async (data: User): Promise<User> => {
+
+
+
   const isUserExist = await prisma.user.findUnique({
     where: {
-      email: data.email,
+      email: data.contactNo,
     },
   });
 
@@ -28,19 +31,19 @@ const signUp = async (data: User): Promise<User> => {
   return result;
 };
 const login = async (data: ILoginUser) => {
-  const { password, email } = data;
-  const isUserExist = await prisma.user.findUnique({
+  const isUserExist = await prisma.user.findFirst({
     where: {
-      email,
+      contactNo: data?.contactNo,
     },
   });
+  console.log(isUserExist,"user");
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
 
   const { id: userId, password: savePassword, role } = isUserExist;
-  if (password !== savePassword) {
+  if (data.password !== savePassword) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
 
@@ -49,9 +52,6 @@ const login = async (data: ILoginUser) => {
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
   );
-  const a = jwtHelpers.verifyToken(accessToken, config.jwt.secret as Secret);
-  // console.log(a,"asdfasdf");
-  console.log(a);
   const refreshToken = jwtHelpers.createToken(
     { userId, role },
     config.jwt.refresh_secret as Secret,
