@@ -10,11 +10,10 @@ export type ILoginResponse = {
   refreshToken?: string;
 };
 const signUP = catchAsync(async (req: Request, res: Response) => {
-  // console.log(req.file,req.body);
-  const file=req.file
-  const uploadImage:any=await FileUploadHelper.uploadCloudinary(file)
-  if(uploadImage){
-    req.body.profileImg=uploadImage?.secure_url
+  const file = req.file;
+  const uploadImage: any = await FileUploadHelper.uploadCloudinary(file);
+  if (uploadImage) {
+    req.body.profileImg = uploadImage?.secure_url;
   }
   const result = await SignUpService.signUp(req.body);
   sendResponse(res, {

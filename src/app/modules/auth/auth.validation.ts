@@ -34,7 +34,8 @@ const signUpValidation = z.object({
   }),
 });
 
+
 export const authValidation = {
   loginValidation,
-  signUpValidation,
+  signUpValidation
 };

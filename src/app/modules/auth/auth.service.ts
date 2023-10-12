@@ -15,9 +15,9 @@ const signUp = async (data: User): Promise<User> => {
 
 
 
-  const isUserExist = await prisma.user.findUnique({
+  const isUserExist = await prisma.user.findFirst({
     where: {
-      email: data.contactNo,
+      contactNo: data.contactNo,
     },
   });
 

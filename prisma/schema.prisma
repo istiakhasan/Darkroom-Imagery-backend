@@ -17,30 +17,67 @@ model User {
   address         String
   profileImg      String
   reviewAndRating ReviewAndRating[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Services        Services[]
+  BookedService   BookedService[]
 
   @@map("user")
 }
 
-model Category {
-  id    String @id @default(uuid())
-  title String
+model Services {
+  id              String            @id @default(uuid())
+  serviceName     String
+  service_desc    String
+  service_img     String
+  userId          String
+  user            User              @relation(fields: [userId], references: [id])
+  ReviewAndRating ReviewAndRating[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  BookedService   BookedService[]
 
-  @@map("category")
+  @@map("services")
 }
 
 model ReviewAndRating {
-  id     String @id @default(uuid())
-  review String
-  rating Int
-  userId String
-  bookId String
-  user   User   @relation(fields: [userId], references: [id])
+  id        String   @id @default(uuid())
+  review    String
+  rating    Int
+  userId    String
+  serviceId String
+  user      User     @relation(fields: [userId], references: [id])
+  service   Services @relation(fields: [serviceId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("review_and_rating")
+}
+
+model BookedService {
+  id        String     @id @default(uuid())
+  userId    String
+  serviceId String
+  remarks   String
+  toDate    DateTime
+  formDate  DateTime
+  status    StatusEnum
+  user      User       @relation(fields: [userId], references: [id])
+  service   Services   @relation(fields: [serviceId], references: [id])
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("booked_services")
 }
 
 enum RoleEnum {
   admin
   user
   super_admin
+}
+
+enum StatusEnum {
+  pending
+  cofirm
+  reject
 }
