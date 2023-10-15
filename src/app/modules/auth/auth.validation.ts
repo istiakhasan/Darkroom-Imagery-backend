@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 const loginValidation = z.object({
   body: z.object({
-    contactNo: z.string({
-      required_error: 'Please provide a phone Number',
+    email: z.string({
+      required_error: 'Please provide a valid email',
     }),
     password: z.string({
       required_error: 'Please provide a passwored',

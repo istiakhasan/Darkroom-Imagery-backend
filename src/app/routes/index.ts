@@ -1,8 +1,10 @@
 import express from 'express';
 import { AuthRouter } from '../modules/auth/auth.routes';
+import { blogRouter } from '../modules/blog/blog.route';
 import { bookedRouter } from '../modules/bookedService/bookedService.route';
 import { bookingSlots } from '../modules/bookingslots/bookingSlots.routes';
 import { categoryRouter } from '../modules/category/category.routes';
+import { faqRouter } from '../modules/faq/faq.route';
 import { servicesRouter } from '../modules/services/services.route';
 import { userRouter } from '../modules/users/users.routes';
 
@@ -32,6 +34,14 @@ const moduleRoutes = [
   {
     path: '/booked-service',
     routes: bookedRouter,
+  },
+  {
+    path: '/faq',
+    routes: faqRouter,
+  },
+  {
+    path: '/blog',
+    routes: blogRouter,
   },
 
 ];

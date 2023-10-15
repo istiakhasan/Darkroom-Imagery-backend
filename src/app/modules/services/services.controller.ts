@@ -22,7 +22,6 @@ const createService = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getAllServices = catchAsync(async (req: Request, res: Response) => {
-  console.log(req.query)
   const filters = pick(req.query, ['searchTerm']);
   const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
   const result = await serviceServices.getAllServices(filters,options);

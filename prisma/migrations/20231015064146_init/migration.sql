@@ -29,6 +29,7 @@ CREATE TABLE "services" (
     "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "price" INTEGER NOT NULL,
 
     CONSTRAINT "services_pkey" PRIMARY KEY ("id")
 );
@@ -38,7 +39,7 @@ CREATE TABLE "review_and_rating" (
     "id" TEXT NOT NULL,
     "review" TEXT NOT NULL,
     "rating" INTEGER NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userEmail" TEXT NOT NULL,
     "serviceId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -49,7 +50,7 @@ CREATE TABLE "review_and_rating" (
 -- CreateTable
 CREATE TABLE "booked_services" (
     "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userEmail" TEXT NOT NULL,
     "serviceId" TEXT NOT NULL,
     "remarks" TEXT NOT NULL,
     "startTime" TEXT NOT NULL,
@@ -67,7 +68,9 @@ CREATE TABLE "faqs" (
     "id" TEXT NOT NULL,
     "question" TEXT NOT NULL,
     "answer" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userEmail" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "faqs_pkey" PRIMARY KEY ("id")
 );
@@ -78,7 +81,7 @@ CREATE TABLE "blog" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "image" TEXT NOT NULL,
-    "authroId" TEXT NOT NULL,
+    "autherEmail" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -104,22 +107,22 @@ CREATE UNIQUE INDEX "user_contactNo_key" ON "user"("contactNo");
 ALTER TABLE "services" ADD CONSTRAINT "services_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "review_and_rating" ADD CONSTRAINT "review_and_rating_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "review_and_rating" ADD CONSTRAINT "review_and_rating_userEmail_fkey" FOREIGN KEY ("userEmail") REFERENCES "user"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "review_and_rating" ADD CONSTRAINT "review_and_rating_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "booked_services" ADD CONSTRAINT "booked_services_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "booked_services" ADD CONSTRAINT "booked_services_userEmail_fkey" FOREIGN KEY ("userEmail") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "booked_services" ADD CONSTRAINT "booked_services_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "faqs" ADD CONSTRAINT "faqs_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "faqs" ADD CONSTRAINT "faqs_userEmail_fkey" FOREIGN KEY ("userEmail") REFERENCES "user"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "blog" ADD CONSTRAINT "blog_authroId_fkey" FOREIGN KEY ("authroId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "blog" ADD CONSTRAINT "blog_autherEmail_fkey" FOREIGN KEY ("autherEmail") REFERENCES "user"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "slots" ADD CONSTRAINT "slots_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

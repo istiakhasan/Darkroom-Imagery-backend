@@ -85,7 +85,8 @@ const getSingleService = async (id: string) => {
     },
     include: {
       user: true,
-      Slots:true  
+      Slots:true  ,
+      ReviewAndRating:true
     },
   });
 

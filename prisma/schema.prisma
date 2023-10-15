@@ -16,13 +16,13 @@ model User {
   contactNo       String            @unique
   address         String
   profileImg      String
-  reviewAndRating ReviewAndRating[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   Services        Services[]
-  BookedService   BookedService[]
   Faqs            Faqs[]
   Blog            Blog[]
+  ReviewAndRating ReviewAndRating[]
+  BookedService   BookedService[]
 
   @@map("user")
 }
@@ -39,6 +39,7 @@ model Services {
   updatedAt       DateTime          @updatedAt
   BookedService   BookedService[]
   Slots           Slots[]
+  price           Int
 
   @@map("services")
 }
@@ -47,9 +48,9 @@ model ReviewAndRating {
   id        String   @id @default(uuid())
   review    String
   rating    Int
-  userId    String
+  userEmail String
   serviceId String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userEmail], references: [email])
   service   Services @relation(fields: [serviceId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -59,14 +60,14 @@ model ReviewAndRating {
 
 model BookedService {
   id        String     @id @default(uuid())
-  userId    String
+  userEmail String
   serviceId String
   remarks   String
   startTime String
   endTime   String
   date      String
   status    StatusEnum
-  user      User       @relation(fields: [userId], references: [id])
+  user      User       @relation(fields: [userEmail], references: [id])
   service   Services   @relation(fields: [serviceId], references: [id])
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
@@ -76,11 +77,13 @@ model BookedService {
 
 // FAQ model schema 
 model Faqs {
-  id       String @id @default(uuid())
-  question String
-  answer   String
-  userId   String
-  user     User   @relation(fields: [userId], references: [id])
+  id        String @id @default(uuid())
+  question  String 
+  answer    String
+  userEmail String
+  user      User   @relation(fields: [userEmail], references: [email])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("faqs")
 }
@@ -91,8 +94,8 @@ model Blog {
   title       String
   description String
   image       String
-  authroId    String
-  user        User     @relation(fields: [authroId], references: [id])
+  autherEmail String
+  user        User     @relation(fields: [autherEmail], references: [email])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
