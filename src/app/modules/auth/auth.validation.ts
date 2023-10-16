@@ -20,9 +20,21 @@ const signUpValidation = z.object({
   password: z.string({
     required_error: 'Please provide a passwored',
   }),
-  role: z.enum(['admin', 'customer'], {
-    required_error: 'Please provide a valid role (admin or customer)',
+  presentAddress: z.string({
+    required_error: 'Present Address is required',
   }),
+  permanentAddress: z.string({
+    required_error: 'Permanent Address is required',
+  }),
+  about: z.string({
+    required_error: 'About is required',
+  }),
+  bioData: z.string({
+    required_error: 'Bio data is required',
+  }),
+  role: z.enum(['admin', 'user','super_admin'], {
+    required_error: 'Please provide a valid role (admin or customer)',
+  }).optional(),
   contactNo: z.string({
     required_error: 'Please provide a contactNo',
   }),
@@ -31,11 +43,10 @@ const signUpValidation = z.object({
   }),
   profileImg: z.string({
     required_error: 'Please provide a profileImg',
-  }),
+  }).optional(),
 });
-
 
 export const authValidation = {
   loginValidation,
-  signUpValidation
+  signUpValidation,
 };

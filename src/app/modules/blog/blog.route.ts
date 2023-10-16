@@ -23,7 +23,7 @@ router.get(
   auth(ENUM_USER_ROLE.ADMIN),
   blogController.getAllBlogByAdminEmail
 );
-// router.get('/get-all', faqController.getAll);
+router.get('/get-all', blogController.getAllBlogForUsers);
 router.patch(
   '/:id',
   FileUploadHelper.upload.single('file'),

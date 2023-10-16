@@ -14,6 +14,10 @@ CREATE TABLE "user" (
     "contactNo" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "profileImg" TEXT NOT NULL,
+    "presentAddress" TEXT NOT NULL,
+    "permanentAddress" TEXT NOT NULL,
+    "about" TEXT NOT NULL,
+    "bioData" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -97,6 +101,14 @@ CREATE TABLE "slots" (
     CONSTRAINT "slots_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "permission" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "permission_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
@@ -126,3 +138,6 @@ ALTER TABLE "blog" ADD CONSTRAINT "blog_autherEmail_fkey" FOREIGN KEY ("autherEm
 
 -- AddForeignKey
 ALTER TABLE "slots" ADD CONSTRAINT "slots_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "permission" ADD CONSTRAINT "permission_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

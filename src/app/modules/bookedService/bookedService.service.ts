@@ -16,7 +16,6 @@ const createBookedService = async (data: BookedService[]) => {
     return results;
   };
 
-//   console.log(result, 'result');
 
 export const bookedService = {
   createBookedService,

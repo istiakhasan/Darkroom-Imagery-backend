@@ -47,8 +47,6 @@ const updateBlog = catchAsync(async (req: Request, res: Response) => {
   if (uploadImage) {
     req.body.image = uploadImage?.secure_url;
   }
-  console.log(req.body,"req.body");
-  return
   const result = await blogService.updateBlog(
     req.user,
     req.params.id,
@@ -71,18 +69,19 @@ const deleteBlog = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-// const getAll = catchAsync(async (req: Request, res: Response) => {
-//   const result = await faqService.getAll();
-//   sendResponse(res, {
-//     success: true,
-//     statusCode: 200,
-//     message: 'Faq Retrived successfully',
-//     data: result,
-//   });
-// });
+const getAllBlogForUsers = catchAsync(async (req: Request, res: Response) => {
+  const result = await blogService.getAllBlogForUsers();
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: 'Blog Retrived successfully',
+    data: result,
+  });
+});
 export const blogController = {
   careteBlog,
   getAllBlogByAdminEmail,
   deleteBlog,
   updateBlog,
+  getAllBlogForUsers
 };

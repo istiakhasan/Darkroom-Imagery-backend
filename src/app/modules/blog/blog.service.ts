@@ -119,8 +119,13 @@ const deleteBlog = async (user: JwtPayload | null, id: string) => {
 
   return result;
 };
-const getAll = async () => {
-  const result = await prisma.faqs.findMany();
+const getAllBlogForUsers = async () => {
+  const result = await prisma.blog.findMany({
+    include:{
+      user:true
+    },
+    orderBy:{createdAt: 'desc'}
+  });
 
   return result;
 };
@@ -129,5 +134,5 @@ export const blogService = {
   getAllBlogByAdminEmail,
   updateBlog,
   deleteBlog,
-  getAll,
+  getAllBlogForUsers,
 };

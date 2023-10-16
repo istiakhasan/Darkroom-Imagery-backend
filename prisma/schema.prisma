@@ -8,21 +8,26 @@ datasource db {
 }
 
 model User {
-  id              String            @id @default(uuid())
-  name            String
-  email           String            @unique
-  password        String
-  role            RoleEnum
-  contactNo       String            @unique
-  address         String
-  profileImg      String
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  Services        Services[]
-  Faqs            Faqs[]
-  Blog            Blog[]
-  ReviewAndRating ReviewAndRating[]
-  BookedService   BookedService[]
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  password         String
+  role             RoleEnum
+  contactNo        String            @unique
+  address          String
+  profileImg       String
+  presentAddress   String
+  permanentAddress String
+  about            String
+  bioData          String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  Services         Services[]
+  Faqs             Faqs[]
+  Blog             Blog[]
+  ReviewAndRating  ReviewAndRating[]
+  BookedService    BookedService[]
+  Permission       Permission[]
 
   @@map("user")
 }
@@ -77,13 +82,13 @@ model BookedService {
 
 // FAQ model schema 
 model Faqs {
-  id        String @id @default(uuid())
-  question  String 
+  id        String   @id @default(uuid())
+  question  String
   answer    String
   userEmail String
-  user      User   @relation(fields: [userEmail], references: [email])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  user      User     @relation(fields: [userEmail], references: [email])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("faqs")
 }
@@ -109,6 +114,14 @@ model Slots {
   serviceId String
 
   @@map("slots")
+}
+
+model Permission {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("permission")
 }
 
 enum RoleEnum {
