@@ -15,7 +15,6 @@ const prisma = new PrismaClient();
 
 const signUp = async (data: User): Promise<User> => {
    if(!data.role){
-    console.log(data.role,"data role");
        data.role="user"
    }
   
@@ -40,7 +39,6 @@ const login = async (data: ILoginUser) => {
       email: data?.email,
     },
   });
-  console.log(isUserExist, 'user');
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
@@ -70,11 +68,12 @@ const getAllUsers = async (
   user:JwtPayload | null,
   filters: {
     searchTerm?: string;
+    role?:string
   },
   options: IPaginationOptions
 ) => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
-  const { searchTerm } = filters;
+  const { searchTerm,role } = filters;
   const andConditons = [];
   if (searchTerm) {
     andConditons.push({
@@ -85,6 +84,9 @@ const getAllUsers = async (
         },
       })),
     });
+  }
+  if(role){
+    andConditons.push({role:(role as RoleEnum)})
   }
   if(user){
 

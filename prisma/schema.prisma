@@ -28,6 +28,7 @@ model User {
   ReviewAndRating  ReviewAndRating[]
   BookedService    BookedService[]
   Permission       Permission[]
+  Category         Category[]
 
   @@map("user")
 }
@@ -38,16 +39,20 @@ model Services {
   service_desc    String
   service_img     String
   userId          String
+  categoryId      String
+  category        Category          @relation(fields: [categoryId], references: [id])
   user            User              @relation(fields: [userId], references: [id])
   ReviewAndRating ReviewAndRating[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   BookedService   BookedService[]
   Slots           Slots[]
-  price           Int
+  price           Float
+  status          ServiceStatusEnum
+  availability    String
 
   @@map("services")
-}
+} 
 
 model ReviewAndRating {
   id        String   @id @default(uuid())
@@ -124,6 +129,19 @@ model Permission {
   @@map("permission")
 }
 
+model Category {
+  id        String     @id @default(uuid())
+  name      String
+  image     String
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  Services  Services[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@map("category")
+}
+
 enum RoleEnum {
   admin
   user
@@ -134,4 +152,10 @@ enum StatusEnum {
   pending
   cofirm
   reject
+}
+
+enum ServiceStatusEnum {
+  upcomming
+  hot
+  tranding
 }

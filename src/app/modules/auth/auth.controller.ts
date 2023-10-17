@@ -40,7 +40,7 @@ const logIn = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, ['searchTerm']);
+  const filters = pick(req.query, ['searchTerm','role']);
   const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
   const result = await SignUpService.getAllUsers(req.user,filters, options);
   sendResponse(res, {

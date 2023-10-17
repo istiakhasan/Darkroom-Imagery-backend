@@ -1,31 +1,102 @@
 import { Category, PrismaClient } from '@prisma/client';
 import httpStatus from 'http-status';
+import { JwtPayload } from 'jsonwebtoken';
 import ApiError from '../../../errors/ApiError';
+import { paginationHelpers } from '../../../helpers/paginationHelper';
+import { IPaginationOptions } from '../../../interfaces/pagination';
 
 const prisma = new PrismaClient();
 
 const createCategory = async (data: Category): Promise<Category> => {
+  console.log(data, 'data');
   const result = await prisma.category.create({
     data,
-  });
-  return result;
-};
-const getAllCategories = async (): Promise<Category[]> => {
-  const result = await prisma.category.findMany({
     include: {
-      books: true,
+      user: true,
     },
   });
   return result;
+};
+
+const getAllCategories = async (
+  user: JwtPayload | null,
+  filters: {
+    searchTerm?: string;
+  },
+  options: IPaginationOptions
+) => {
+  const { page, limit, skip } = paginationHelpers.calculatePagination(options);
+  const { searchTerm } = filters;
+  const andConditons = [];
+
+  if (searchTerm) {
+    andConditons.push({
+      OR: ['name'].map(field => ({
+        [field]: {
+          contains: searchTerm,
+          mode: 'insensitive',
+        },
+      })),
+    });
+  }
+  if (user) {
+    andConditons.push({ userId: user.id });
+  }
+  const whereConditons = andConditons.length > 0 ? { AND: andConditons } : {};
+
+  let result;
+  if (user) {
+    result = await prisma.category.findMany({
+      skip,
+      take: limit,
+      where: whereConditons,
+      orderBy:
+        options.sortBy && options.sortOrder
+          ? {
+              [options.sortBy]: options.sortOrder,
+            }
+          : {
+              createdAt: 'desc',
+            },
+    });
+  }
+  const total = await prisma.category.count({
+    where: whereConditons,
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
+};
+const getCagegoryLabel = async () => {
+  let result = await prisma.category.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select:{
+      id:true,
+      name:true
+    }
+  });
+
+  return result.map(item=>{
+    return {
+      label:item?.name,
+      value:item?.id
+    }
+  });
 };
 const getSingleCategory = async (id: string): Promise<Category | null> => {
   const result = await prisma.category.findUnique({
     where: {
       id,
-    },
-    include: {
-      books: true,
-    },
+    }
+   
   });
   if (!result) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Category is not exist!');
@@ -76,4 +147,5 @@ export const categoryService = {
   deleteCategory,
   createCategory,
   getAllCategories,
+  getCagegoryLabel,
 };

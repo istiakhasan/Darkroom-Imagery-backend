@@ -32,10 +32,10 @@ router.delete(
 );
 router.patch(
   '/all-users/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN,ENUM_USER_ROLE.SUPER_ADMIN),
   FileUploadHelper.upload.single('file'),
   (req: Request, res: Response, next: NextFunction) => {
-    req.body = authValidation.signUpValidation.parse(JSON.parse(req.body.data));
+    req.body = authValidation.userUpdateValidation.parse(JSON.parse(req.body.data));
     return signUpController.updateUser(req, res, next);
   }
 );

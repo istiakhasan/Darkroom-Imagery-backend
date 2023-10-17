@@ -46,7 +46,44 @@ const signUpValidation = z.object({
   }).optional(),
 });
 
+const userUpdateValidation = z.object({
+  name: z.string({
+    required_error: 'Name is required',
+  }).optional(),
+  email: z.string({
+    required_error: 'Please provide a Email',
+  }).optional(),
+  password: z.string({
+    required_error: 'Please provide a password',
+  }).optional(),
+  presentAddress: z.string({
+    required_error: 'Present Address is required',
+  }).optional(),
+  permanentAddress: z.string({
+    required_error: 'Permanent Address is required',
+  }).optional(),
+  about: z.string({
+    required_error: 'About is required',
+  }).optional(),
+  bioData: z.string({
+    required_error: 'Bio data is required',
+  }).optional(),
+  role: z.enum(['admin', 'user', 'super_admin'], {
+    required_error: 'Please provide a valid role (admin, user, or super_admin)',
+  }).optional(),
+  contactNo: z.string({
+    required_error: 'Please provide a contactNo',
+  }).optional(),
+  address: z.string({
+    required_error: 'Please provide an address',
+  }).optional(),
+  profileImg: z.string({
+    required_error: 'Please provide a profileImg',
+  }).optional(),
+});
+
 export const authValidation = {
   loginValidation,
   signUpValidation,
+  userUpdateValidation
 };

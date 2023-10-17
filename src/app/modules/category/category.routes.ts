@@ -1,9 +1,10 @@
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import { z } from 'zod'
 import { ENUM_USER_ROLE } from '../../../enums/user'
+import { FileUploadHelper } from '../../../helpers/FileUploadHelpers'
 import auth from '../../middlewares/auth'
-import validateRequest from '../../middlewares/validateRequest'
 import { categoryController } from './category.controller'
+import { categorySchema } from './categoryValidation'
 
 const categoryZod=z.object({
     body:z.object({
@@ -13,8 +14,13 @@ const categoryZod=z.object({
 const router=express.Router()
 
 
-router.post('/create-category',validateRequest(categoryZod),auth(ENUM_USER_ROLE.ADMIN),categoryController.createCategory)
-router.get('/',categoryController.getAllCategories)
+router.post('/create-category',FileUploadHelper.upload.single('file'),
+(req: Request, res: Response, next: NextFunction) => {
+  req.body = categorySchema.createCategorySchema.parse(JSON.parse(req.body.data));
+  return categoryController.createCategory(req, res, next);
+})
+router.get('/',auth(ENUM_USER_ROLE.SUPER_ADMIN,ENUM_USER_ROLE.ADMIN),categoryController.getAllCategories)
+router.get('/all',auth(ENUM_USER_ROLE.SUPER_ADMIN,ENUM_USER_ROLE.ADMIN),categoryController.getCagegoryLabel)
 router.get('/:id',categoryController.getSingleCategory)
 router.patch('/:id',auth(ENUM_USER_ROLE.ADMIN),categoryController.updateCategory)
 router.delete('/:id',auth(ENUM_USER_ROLE.ADMIN),categoryController.deleteCategory)

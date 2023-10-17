@@ -1,9 +1,19 @@
 import { Request, Response } from 'express';
+import { FileUploadHelper } from '../../../helpers/FileUploadHelpers';
 import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
 import { categoryService } from './category.service';
 
 const createCategory = catchAsync(async (req: Request, res: Response) => {
+  const file = req.file;
+  let uploadImage: any;
+  if (file) {
+    uploadImage = await FileUploadHelper.uploadCloudinary(file);
+  }
+  if (uploadImage) {
+    req.body.image = uploadImage?.secure_url;
+  }
   const result = await categoryService.createCategory(req.body);
   sendResponse(res, {
     success: true,
@@ -13,7 +23,20 @@ const createCategory = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getAllCategories = catchAsync(async (req: Request, res: Response) => {
-  const result = await categoryService.getAllCategories();
+  const filters = pick(req.query, ['searchTerm']);
+  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+  const result = await categoryService.getAllCategories( req.user,
+    filters,
+    options);
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: 'Categories fetched successfully',
+    data: result,
+  });
+});
+const getCagegoryLabel = catchAsync(async (req: Request, res: Response) => {
+  const result = await categoryService.getCagegoryLabel();
   sendResponse(res, {
     success: true,
     statusCode: 200,
@@ -60,4 +83,5 @@ export const categoryController = {
   updateCategory,
   deleteCategory,
   createCategory,
+  getCagegoryLabel
 };

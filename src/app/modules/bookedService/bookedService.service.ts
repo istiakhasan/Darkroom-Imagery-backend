@@ -8,7 +8,6 @@ const createBookedService = async (data: BookedService[]) => {
         const item = await prisma.bookedService.create({
           data: element,
         });
-        console.log(item, "item");
         return item;
       })
     );

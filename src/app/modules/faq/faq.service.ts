@@ -10,13 +10,11 @@ const prisma = new PrismaClient();
 const createFaq = async (data: Faqs, user: JwtPayload | null) => {
   let result;
   if (user) {
-    console.log(user, 'user');
     const isExist = await prisma.user.findUnique({
       where: {
         email: user.email,
       },
     });
-    console.log(isExist, 'is exist');
     if (!isExist) {
       throw new ApiError(httpStatus.NOT_FOUND, 'User is not exist');
     }
@@ -91,7 +89,6 @@ const updateFaq = async (
   id: string,
   data: Partial<Faqs>
 ) => {
-  console.log(user, id);
   let result;
   if (user) {
     result = await prisma.faqs.update({

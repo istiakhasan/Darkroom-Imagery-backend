@@ -22,7 +22,6 @@ const updateProfile = async (
     user: JwtPayload | null,
     data: Partial<User>
   ) => {
-    console.log(data,"data",user);
     let result;
     if (user) {
       result = await prisma.user.update({

@@ -8,7 +8,6 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 const prisma = new PrismaClient();
 
 const createBlog = async (data:Blog, user: JwtPayload | null) => {
-    console.log(data,user,"user");
   let result;
   if (user) {
     const isExist = await prisma.user.findUnique({
@@ -16,7 +15,6 @@ const createBlog = async (data:Blog, user: JwtPayload | null) => {
         email: user.email,
       },
     });
-    console.log(data,"data");
     if (!isExist) {
       throw new ApiError(httpStatus.NOT_FOUND, 'User is not exist');
     }
@@ -28,7 +26,6 @@ const createBlog = async (data:Blog, user: JwtPayload | null) => {
       },
     });
   }
-  console.log(result,"result");
   return result;
 };
 

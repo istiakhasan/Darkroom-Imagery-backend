@@ -26,7 +26,6 @@ const updateProfile = catchAsync(async (req: Request, res: Response) => {
     if (uploadImage) {
       req.body.profileImg = uploadImage?.secure_url;
     }
-    console.log(req.body,"body");
     const result = await profileServices.updateProfile(
       req.user,
       req.body
