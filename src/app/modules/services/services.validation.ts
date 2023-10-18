@@ -1,15 +1,4 @@
 import { z } from 'zod';
-// {
-//     "id": "1",
-//     "serviceName": "Plumbing Service",
-//     "service_desc": "Professional plumbing service for both residential and commercial properties.",
-//     "service_img": "https://example.com/plumbing.jpg",
-//     "userId": "123",
-//     "categoryId": "5",
-//     "price": 50,
-//     "status": "ACTIVE",
-//     "availability": "Mon-Fri, 9AM-5PM"
-//   }
 const serviceValidationSchema = z.object({
   serviceName: z.string({
     required_error: 'Service Name is required',
@@ -28,6 +17,9 @@ const serviceValidationSchema = z.object({
   }),
   availability: z.string({
     required_error: 'availability is required',
+  }),
+  location: z.string({
+    required_error: 'Location is required',
   }),
   status: z.enum(['upcomming', 'hot', 'tranding']),
 });

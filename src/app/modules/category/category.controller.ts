@@ -36,7 +36,8 @@ const getAllCategories = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getCagegoryLabel = catchAsync(async (req: Request, res: Response) => {
-  const result = await categoryService.getCagegoryLabel();
+  const options = pick(req.query, ['category']);
+  const result = await categoryService.getCagegoryLabel(options);
   sendResponse(res, {
     success: true,
     statusCode: 200,

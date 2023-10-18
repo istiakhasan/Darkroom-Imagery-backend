@@ -5,7 +5,9 @@ import { bookedRouter } from '../modules/bookedService/bookedService.route';
 import { bookingSlots } from '../modules/bookingslots/bookingSlots.routes';
 import { categoryRouter } from '../modules/category/category.routes';
 import { faqRouter } from '../modules/faq/faq.route';
+import { feedbackRouter } from '../modules/feedback/feedback.route';
 import { profileRouter } from '../modules/profile/profile.route';
+import { reviewRoute } from '../modules/review/review.route';
 import { servicesRouter } from '../modules/services/services.route';
 import { userRouter } from '../modules/users/users.routes';
 
@@ -47,6 +49,14 @@ const moduleRoutes = [
   {
     path: '/profile',
     routes: profileRouter,
+  },
+  {
+    path: '/review',
+    routes: reviewRoute,
+  },
+  {
+    path: '/feedback',
+    routes: feedbackRouter,
   },
 
 ];

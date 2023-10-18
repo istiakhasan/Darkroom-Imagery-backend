@@ -33,8 +33,7 @@ const getAllServices = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getAllServicesForUsers = catchAsync(async (req: Request, res: Response) => {
-  console.log(req.query,"query");
-  const filters = pick(req.query, ['searchTerm','minPrice','maxPrice','isAvailable','status']);
+  const filters = pick(req.query, ['searchTerm','minPrice','maxPrice','isAvailable','status','location','categoryId']);
   const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
   const result = await serviceServices.getAllServicesForUsers(filters,options);
   sendResponse(res, {

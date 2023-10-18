@@ -88,15 +88,18 @@ const getAllServicesForUsers = async (
     maxPrice?: number;
     isAvailable?: string;
     status?: string;
+    location?:string;
+    categoryId?:string
   },
   options: IPaginationOptions
 ): Promise<IGenericResponse<Services[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
-  const { searchTerm, minPrice, maxPrice, isAvailable, status } = filters;
-  console.log(minPrice, maxPrice);
+  const { searchTerm, minPrice, maxPrice, isAvailable, status,location,categoryId } = filters;
+  console.log(categoryId);
+
+
 
   const andConditons = [];
-  console.log(isAvailable, 'available');
   if (isAvailable) {
     andConditons.push({
       OR: [
@@ -105,11 +108,20 @@ const getAllServicesForUsers = async (
       ],
     });
   }
-  console.log(status,"status");
   if (status) {
     andConditons.push({
       status: ServiceStatusEnum.upcomming,
     });
+  }
+  if (categoryId) {
+    andConditons.push({
+      categoryId: categoryId,
+    });
+  }
+  if(location){
+    andConditons.push({
+      location:location
+    })
   }
   if (isAvailable) {
     andConditons.push({
@@ -136,12 +148,19 @@ const getAllServicesForUsers = async (
 
   if (searchTerm) {
     andConditons.push({
-      OR: ['serviceName'].map(field => ({
+      OR: [...['serviceName','location','categoryId'].map(field => ({
         [field]: {
           contains: searchTerm,
           mode: 'insensitive',
         },
-      })),
+      })), {
+        category: {
+          name: {
+            contains: searchTerm,
+            mode: 'insensitive',
+          },
+        },
+      },],
     });
   }
 
@@ -150,9 +169,11 @@ const getAllServicesForUsers = async (
   const result = await prisma.services.findMany({
     skip,
     take: limit,
+    // @ts-ignore
     where: whereConditons,
     include: {
       user: true,
+      category:true
     },
     orderBy:
       options.sortBy && options.sortOrder
@@ -164,6 +185,7 @@ const getAllServicesForUsers = async (
           },
   });
   const total = await prisma.services.count({
+    // @ts-ignore
     where: whereConditons,
   });
 
@@ -185,7 +207,14 @@ const getSingleService = async (id: string) => {
     include: {
       user: true,
       Slots: true,
-      ReviewAndRating: true,
+      ReviewAndRating: {
+        include:{
+          user:true
+        },
+        orderBy:{
+          createdAt: 'desc'
+        }
+      },
     },
   });
 

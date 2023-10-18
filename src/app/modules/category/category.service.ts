@@ -73,30 +73,31 @@ const getAllCategories = async (
     data: result,
   };
 };
-const getCagegoryLabel = async () => {
+const getCagegoryLabel = async (option: { category?: string }) => {
   let result = await prisma.category.findMany({
     orderBy: {
       createdAt: 'desc',
     },
-    select:{
-      id:true,
-      name:true
+    include:{
+      Services:true
     }
   });
-
-  return result.map(item=>{
-    return {
-      label:item?.name,
-      value:item?.id
-    }
-  });
+  if (option?.category) {
+    return result;
+  } else {
+    return result.map(item => {
+      return {
+        label: item?.name,
+        value: item?.id,
+      };
+    });
+  }
 };
 const getSingleCategory = async (id: string): Promise<Category | null> => {
   const result = await prisma.category.findUnique({
     where: {
       id,
-    }
-   
+    },
   });
   if (!result) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Category is not exist!');
