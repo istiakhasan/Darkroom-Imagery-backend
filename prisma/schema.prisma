@@ -79,7 +79,8 @@ model BookedService {
   endTime   String
   date      String
   status    StatusEnum
-  user      User       @relation(fields: [userEmail], references: [id])
+  isCancel  Boolean
+  user      User       @relation(fields: [userEmail], references: [email])
   service   Services   @relation(fields: [serviceId], references: [id])
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt

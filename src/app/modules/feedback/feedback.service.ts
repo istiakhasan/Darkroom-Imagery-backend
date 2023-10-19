@@ -4,7 +4,6 @@ import { JwtPayload } from 'jsonwebtoken';
 import ApiError from '../../../errors/ApiError';
 const prisma = new PrismaClient();
 const createFeedback = async (data: Feedback, user: JwtPayload | null) => {
-    console.log(data,"data",user);
   let result;
   if (user) {
     const isExist = await prisma.user.findUnique({
@@ -22,7 +21,6 @@ const createFeedback = async (data: Feedback, user: JwtPayload | null) => {
       },
     });
   }
-  console.log(result,"result");
   return result;
 };
 const getAllFeedback = async () => {

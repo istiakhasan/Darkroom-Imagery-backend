@@ -8,7 +8,6 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 const prisma = new PrismaClient();
 
 const createCategory = async (data: Category): Promise<Category> => {
-  console.log(data, 'data');
   const result = await prisma.category.create({
     data,
     include: {

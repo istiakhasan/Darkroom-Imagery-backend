@@ -7,8 +7,6 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 const prisma = new PrismaClient();
 
 const createService = async (data: Services): Promise<Services> => {
-  console.log(data, 'data');
-  // return
   const isUserExist = await prisma.services.findFirst({
     where: {
       serviceName: data.serviceName,
@@ -95,9 +93,6 @@ const getAllServicesForUsers = async (
 ): Promise<IGenericResponse<Services[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, minPrice, maxPrice, isAvailable, status,location,categoryId } = filters;
-  console.log(categoryId);
-
-
 
   const andConditons = [];
   if (isAvailable) {
