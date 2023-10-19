@@ -85,6 +85,15 @@ const getSingleService = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const deleteService = catchAsync(async (req: Request, res: Response) => {
+  const result = await serviceServices.deleteService(req.params.id);
+  sendResponse(res, {
+    success: true,
+    message: 'Service deleted successfully!',
+    statusCode: httpStatus.OK,
+    data: result,
+  });
+});
 
 export const serviceController = {
   getAllServices,
@@ -92,4 +101,5 @@ export const serviceController = {
   getSingleService,
   getAllServicesForUsers,
   updateServices,
+  deleteService
 };

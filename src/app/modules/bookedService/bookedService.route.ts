@@ -6,7 +6,7 @@ import { bookedController } from './bookedService.controller';
 const router = express.Router();
 
 router.post('/', bookedController.createBooked);
-router.get('/',auth(ENUM_USER_ROLE.ADMIN,ENUM_USER_ROLE.USER), bookedController.getByEmail);
+router.get('/',auth(ENUM_USER_ROLE.ADMIN,ENUM_USER_ROLE.USER,ENUM_USER_ROLE.SUPER_ADMIN), bookedController.getByEmail);
 router.patch('/:id',auth(ENUM_USER_ROLE.ADMIN,ENUM_USER_ROLE.USER), bookedController.manageBooking);
 
 export const bookedRouter = router;

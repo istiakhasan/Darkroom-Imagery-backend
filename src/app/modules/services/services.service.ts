@@ -227,12 +227,18 @@ const getSingleService = async (id: string) => {
   return result;
 };
 
-const updateServices = async (
-  id: string,
-  data: Partial<Services>
-) => {
+const updateServices = async (id: string, data: Partial<Services>) => {
   const result = await prisma.services.update({
     data,
+    where: {
+      id: id,
+    },
+  });
+
+  return result;
+};
+const deleteService = async (id: string) => {
+  const result = await prisma.services.delete({
     where: {
       id: id,
     },
@@ -247,4 +253,5 @@ export const serviceServices = {
   getSingleService,
   getAllServicesForUsers,
   updateServices,
+  deleteService,
 };
