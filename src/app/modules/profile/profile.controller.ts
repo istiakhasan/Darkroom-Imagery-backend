@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { FileUploadHelper } from '../../../helpers/FileUploadHelpers';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { profileServices } from './profile.service';
@@ -17,18 +16,18 @@ const getProfileInfoByEmail = catchAsync(
 );
 
 const updateProfile = catchAsync(async (req: Request, res: Response) => {
-    const file = req.file;
-    let uploadImage: any;
-  
-    if (file) {
-      uploadImage = await FileUploadHelper.uploadCloudinary(file);
-    }
-    if (uploadImage) {
-      req.body.profileImg = uploadImage?.secure_url;
-    }
+  const data=JSON.parse(req.body.data )
+   // @ts-ignore
+  const base64Data = req?.files?.file?.data?.toString('base64')
+  if (base64Data) {
+    // @ts-ignore
+    data["profileImg"] = `data:${req?.files?.file?.mimetype};base64,` + base64Data
+  } else {
+   delete data.profileImg 
+  }
     const result = await profileServices.updateProfile(
       req.user,
-      req.body
+      data
     );
     sendResponse(res, {
       success: true,

@@ -14,6 +14,7 @@ export type ILoginUser = {
 const prisma = new PrismaClient();
 
 const signUp = async (data: User): Promise<User> => {
+
    if(!data.role){
        data.role="user"
    }

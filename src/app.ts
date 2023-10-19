@@ -1,14 +1,14 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application, NextFunction, Request, Response } from 'express';
+import fileUpload from 'express-fileupload';
 import httpStatus from 'http-status';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import routes from './app/routes';
 
-import cookieParser from 'cookie-parser';
-
 const app: Application = express();
-
-app.use(cors({origin:"http://localhost:3000",credentials:true}));
+app.use(fileUpload())
+app.use(cors({origin:"https://darkroom-imagery-frontend.vercel.app",credentials:true}));
 app.use(cookieParser());
 
 //parser

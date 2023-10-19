@@ -1,17 +1,20 @@
 import { Request, Response } from 'express';
-import { FileUploadHelper } from '../../../helpers/FileUploadHelpers';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
 import { blogService } from './blog.service';
 
 const careteBlog = catchAsync(async (req: Request, res: Response) => {
-  const file = req.file;
-  const uploadImage: any = await FileUploadHelper.uploadCloudinary(file);
-  if (uploadImage) {
-    req.body.image = uploadImage?.secure_url;
+  const data=JSON.parse(req.body.data )
+   // @ts-ignore
+  const base64Data = req?.files?.file?.data?.toString('base64')
+  if (base64Data) {
+     // @ts-ignore
+    data["image"] = `data:${req?.files?.file?.mimetype};base64,` + base64Data
+  } else {
+    data.image = ''
   }
-  const result = await blogService.createBlog(req.body, req.user);
+  const result = await blogService.createBlog(data, req.user);
   sendResponse(res, {
     success: true,
     statusCode: 200,
@@ -38,19 +41,19 @@ const getAllBlogByAdminEmail = catchAsync(
 );
 
 const updateBlog = catchAsync(async (req: Request, res: Response) => {
-  const file = req.file;
-  let uploadImage: any;
-
-  if (file) {
-    uploadImage = await FileUploadHelper.uploadCloudinary(file);
-  }
-  if (uploadImage) {
-    req.body.image = uploadImage?.secure_url;
+  const data=JSON.parse(req.body.data )
+   // @ts-ignore
+  const base64Data = req?.files?.file?.data?.toString('base64')
+  if (base64Data) {
+     // @ts-ignore
+    data["image"] = `data:${req?.files?.file?.mimetype};base64,` + base64Data
+  } else {
+    data.image = ''
   }
   const result = await blogService.updateBlog(
     req.user,
     req.params.id,
-    req.body
+    data
   );
   sendResponse(res, {
     success: true,

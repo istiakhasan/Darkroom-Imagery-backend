@@ -1,20 +1,21 @@
 import { Request, Response } from 'express';
-import { FileUploadHelper } from '../../../helpers/FileUploadHelpers';
 import catchAsync from '../../../shared/catchAsync';
 import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
 import { categoryService } from './category.service';
 
 const createCategory = catchAsync(async (req: Request, res: Response) => {
-  const file = req.file;
-  let uploadImage: any;
-  if (file) {
-    uploadImage = await FileUploadHelper.uploadCloudinary(file);
+  const data=JSON.parse(req.body.data )
+  //@ts-ignore
+  const base64Data = req?.files?.file?.data?.toString('base64')
+  if (base64Data) {
+    // @ts-ignore
+    data["image"] = `data:${req?.files?.file?.mimetype};base64,` + base64Data
+  } else {
+    data.image = ''
   }
-  if (uploadImage) {
-    req.body.image = uploadImage?.secure_url;
-  }
-  const result = await categoryService.createCategory(req.body);
+
+  const result = await categoryService.createCategory(data);
   sendResponse(res, {
     success: true,
     statusCode: 200,

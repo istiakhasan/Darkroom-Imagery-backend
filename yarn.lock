@@ -185,6 +185,13 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/busboy@*":
+  version "1.5.2"
+  resolved "https://registry.npmjs.org/@types/busboy/-/busboy-1.5.2.tgz"
+  integrity sha512-OYkRy+dkQWwoGch3oyQ9UE08PO1jSte7aBtPemLXAP9evwh7fNAfikWdB2VMeP8syY3H/XvGq+pB38dDvTe06g==
+  dependencies:
+    "@types/node" "*"
+
 "@types/connect@*":
   version "3.4.36"
   resolved "https://registry.npmjs.org/@types/connect/-/connect-3.4.36.tgz"
@@ -205,6 +212,14 @@
   integrity sha512-RXHUvNWYICtbP6s18PnOCaqToK8y14DnLd75c6HfyKf228dxy7pHNOQkxPtvXKp/hINFMDjbYzsj63nnpPMSRQ==
   dependencies:
     "@types/node" "*"
+
+"@types/express-fileupload@^1.4.3":
+  version "1.4.3"
+  resolved "https://registry.npmjs.org/@types/express-fileupload/-/express-fileupload-1.4.3.tgz"
+  integrity sha512-DvSXoec9+IcfXJ7qG48yCUKpbyEV5CQAZlGzsh2B8FTvb/MrMq/y2YpuAtnWYyjfqRaooKJL7TxgWIkiPehyqQ==
+  dependencies:
+    "@types/busboy" "*"
+    "@types/express" "*"
 
 "@types/express-serve-static-core@^4.17.33":
   version "4.17.37"
@@ -570,7 +585,7 @@ buffer-from@^1.0.0:
   resolved "https://registry.npmjs.org/buffer-from/-/buffer-from-1.1.2.tgz"
   integrity sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==
 
-busboy@^1.0.0:
+busboy@^1.0.0, busboy@^1.6.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/busboy/-/busboy-1.6.0.tgz"
   integrity sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==
@@ -1091,6 +1106,13 @@ execa@7.2.0:
     onetime "^6.0.0"
     signal-exit "^3.0.7"
     strip-final-newline "^3.0.0"
+
+express-fileupload@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.npmjs.org/express-fileupload/-/express-fileupload-1.4.1.tgz"
+  integrity sha512-9F6SkbxbEOA9cYOBZ8tnn238jL+bGfacQuUO/JqPWp5t+piUcoDcESvKwAXsQV7IHGxmI5bMj3QxMWOKOIsMCg==
+  dependencies:
+    busboy "^1.6.0"
 
 express@^4.18.2:
   version "4.18.2"

@@ -86,13 +86,21 @@ const getAllServicesForUsers = async (
     maxPrice?: number;
     isAvailable?: string;
     status?: string;
-    location?:string;
-    categoryId?:string
+    location?: string;
+    categoryId?: string;
   },
   options: IPaginationOptions
 ): Promise<IGenericResponse<Services[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
-  const { searchTerm, minPrice, maxPrice, isAvailable, status,location,categoryId } = filters;
+  const {
+    searchTerm,
+    minPrice,
+    maxPrice,
+    isAvailable,
+    status,
+    location,
+    categoryId,
+  } = filters;
 
   const andConditons = [];
   if (isAvailable) {
@@ -113,10 +121,10 @@ const getAllServicesForUsers = async (
       categoryId: categoryId,
     });
   }
-  if(location){
+  if (location) {
     andConditons.push({
-      location:location
-    })
+      location: location,
+    });
   }
   if (isAvailable) {
     andConditons.push({
@@ -143,19 +151,22 @@ const getAllServicesForUsers = async (
 
   if (searchTerm) {
     andConditons.push({
-      OR: [...['serviceName','location','categoryId'].map(field => ({
-        [field]: {
-          contains: searchTerm,
-          mode: 'insensitive',
-        },
-      })), {
-        category: {
-          name: {
+      OR: [
+        ...['serviceName', 'location', 'categoryId'].map(field => ({
+          [field]: {
             contains: searchTerm,
             mode: 'insensitive',
           },
+        })),
+        {
+          category: {
+            name: {
+              contains: searchTerm,
+              mode: 'insensitive',
+            },
+          },
         },
-      },],
+      ],
     });
   }
 
@@ -168,7 +179,7 @@ const getAllServicesForUsers = async (
     where: whereConditons,
     include: {
       user: true,
-      category:true
+      category: true,
     },
     orderBy:
       options.sortBy && options.sortOrder
@@ -203,13 +214,27 @@ const getSingleService = async (id: string) => {
       user: true,
       Slots: true,
       ReviewAndRating: {
-        include:{
-          user:true
+        include: {
+          user: true,
         },
-        orderBy:{
-          createdAt: 'desc'
-        }
+        orderBy: {
+          createdAt: 'desc',
+        },
       },
+    },
+  });
+
+  return result;
+};
+
+const updateServices = async (
+  id: string,
+  data: Partial<Services>
+) => {
+  const result = await prisma.services.update({
+    data,
+    where: {
+      id: id,
     },
   });
 
@@ -221,4 +246,5 @@ export const serviceServices = {
   getAllServices,
   getSingleService,
   getAllServicesForUsers,
+  updateServices,
 };

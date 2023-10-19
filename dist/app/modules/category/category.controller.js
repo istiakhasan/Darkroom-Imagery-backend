@@ -13,21 +13,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.categoryController = void 0;
-const FileUploadHelpers_1 = require("../../../helpers/FileUploadHelpers");
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const pick_1 = __importDefault(require("../../../shared/pick"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const category_service_1 = require("./category.service");
 const createCategory = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const file = req.file;
-    let uploadImage;
-    if (file) {
-        uploadImage = yield FileUploadHelpers_1.FileUploadHelper.uploadCloudinary(file);
+    var _a, _b, _c, _d, _e;
+    const data = JSON.parse(req.body.data);
+    //@ts-ignore
+    const base64Data = (_c = (_b = (_a = req === null || req === void 0 ? void 0 : req.files) === null || _a === void 0 ? void 0 : _a.file) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.toString('base64');
+    if (base64Data) {
+        // @ts-ignore
+        data["image"] = `data:${(_e = (_d = req === null || req === void 0 ? void 0 : req.files) === null || _d === void 0 ? void 0 : _d.file) === null || _e === void 0 ? void 0 : _e.mimetype};base64,` + base64Data;
     }
-    if (uploadImage) {
-        req.body.image = uploadImage === null || uploadImage === void 0 ? void 0 : uploadImage.secure_url;
+    else {
+        data.image = '';
     }
-    const result = yield category_service_1.categoryService.createCategory(req.body);
+    const result = yield category_service_1.categoryService.createCategory(data);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: 200,

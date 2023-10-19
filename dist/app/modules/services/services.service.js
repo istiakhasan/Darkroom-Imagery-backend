@@ -79,7 +79,7 @@ const getAllServices = (filters, options) => __awaiter(void 0, void 0, void 0, f
 });
 const getAllServicesForUsers = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { page, limit, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
-    const { searchTerm, minPrice, maxPrice, isAvailable, status, location, categoryId } = filters;
+    const { searchTerm, minPrice, maxPrice, isAvailable, status, location, categoryId, } = filters;
     const andConditons = [];
     if (isAvailable) {
         andConditons.push({
@@ -101,7 +101,7 @@ const getAllServicesForUsers = (filters, options) => __awaiter(void 0, void 0, v
     }
     if (location) {
         andConditons.push({
-            location: location
+            location: location,
         });
     }
     if (isAvailable) {
@@ -128,19 +128,22 @@ const getAllServicesForUsers = (filters, options) => __awaiter(void 0, void 0, v
     }
     if (searchTerm) {
         andConditons.push({
-            OR: [...['serviceName', 'location', 'categoryId'].map(field => ({
+            OR: [
+                ...['serviceName', 'location', 'categoryId'].map(field => ({
                     [field]: {
                         contains: searchTerm,
                         mode: 'insensitive',
                     },
-                })), {
+                })),
+                {
                     category: {
                         name: {
                             contains: searchTerm,
                             mode: 'insensitive',
                         },
                     },
-                },],
+                },
+            ],
         });
     }
     const whereConditons = andConditons.length > 0 ? { AND: andConditons } : {};
@@ -151,7 +154,7 @@ const getAllServicesForUsers = (filters, options) => __awaiter(void 0, void 0, v
         where: whereConditons,
         include: {
             user: true,
-            category: true
+            category: true,
         },
         orderBy: options.sortBy && options.sortOrder
             ? {
@@ -184,12 +187,21 @@ const getSingleService = (id) => __awaiter(void 0, void 0, void 0, function* () 
             Slots: true,
             ReviewAndRating: {
                 include: {
-                    user: true
+                    user: true,
                 },
                 orderBy: {
-                    createdAt: 'desc'
-                }
+                    createdAt: 'desc',
+                },
             },
+        },
+    });
+    return result;
+});
+const updateServices = (id, data) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma.services.update({
+        data,
+        where: {
+            id: id,
         },
     });
     return result;
@@ -199,4 +211,5 @@ exports.serviceServices = {
     getAllServices,
     getSingleService,
     getAllServicesForUsers,
+    updateServices,
 };
