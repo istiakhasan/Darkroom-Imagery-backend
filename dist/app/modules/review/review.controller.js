@@ -35,26 +35,6 @@ const getReview = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
         data: result,
     });
 }));
-// const getAllServicesForUsers = catchAsync(async (req: Request, res: Response) => {
-//   const filters = pick(req.query, ['searchTerm','minPrice','maxPrice','isAvailable','status','location','categoryId']);
-//   const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
-//   const result = await serviceServices.getAllServicesForUsers(filters,options);
-//   sendResponse(res, {
-//     success: true,
-//     message: 'Service retrived successfully!',
-//     statusCode: httpStatus.OK,
-//     data: result,
-//   });
-// });
-// const getSingleService = catchAsync(async (req: Request, res: Response) => {
-//   const result = await serviceServices.getSingleService(req.params.id);
-//   sendResponse(res, {
-//     success: true,
-//     message: 'Servic retrived successfully!',
-//     statusCode: httpStatus.OK,
-//     data: result,
-//   });
-// });
 exports.reviewController = {
     createReview,
     getReview

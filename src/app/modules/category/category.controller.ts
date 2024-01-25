@@ -5,17 +5,7 @@ import sendResponse from '../../../shared/sendResponse';
 import { categoryService } from './category.service';
 
 const createCategory = catchAsync(async (req: Request, res: Response) => {
-  const data=JSON.parse(req.body.data )
-  //@ts-ignore
-  const base64Data = req?.files?.file?.data?.toString('base64')
-  if (base64Data) {
-    // @ts-ignore
-    data["image"] = `data:${req?.files?.file?.mimetype};base64,` + base64Data
-  } else {
-    data.image = ''
-  }
-
-  const result = await categoryService.createCategory(data);
+  const result = await categoryService.createCategory(req.body);
   sendResponse(res, {
     success: true,
     statusCode: 200,

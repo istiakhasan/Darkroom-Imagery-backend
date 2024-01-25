@@ -11,20 +11,7 @@ export type ILoginResponse = {
 };
 const signUP = catchAsync(async (req: Request, res: Response) => {
 
-
-  const data=JSON.parse(req.body.data )
-   // @ts-ignore
-  const base64Data = req?.files?.file?.data?.toString('base64')
-  if (base64Data) {
-     // @ts-ignore
-    data["profileImg"] = `data:${req?.files?.file?.mimetype};base64,` + base64Data
-  } else {
-    data.profileImg = ''
-  }
-
-
-
-  const result = await SignUpService.signUp(data);
+  const result = await SignUpService.signUp(req.body);
   sendResponse(res, {
     success: true,
     message: 'User created successfully!',
@@ -69,17 +56,7 @@ const deleteUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const updateUser = catchAsync(async (req: Request, res: Response) => {
-  const data=JSON.parse(req?.body?.data )
-   // @ts-ignore
-  const base64Data = req?.files?.file?.data?.toString('base64')
-  if (base64Data) {
-     // @ts-ignore
-    data["profileImg"] = `data:${req?.files?.file?.mimetype};base64,` + base64Data
-  } else {
-    data.profileImg = ''
-  }
-
-  const result = await SignUpService.updateUser(req.params.id,data);
+  const result = await SignUpService.updateUser(req.params.id,req.body);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

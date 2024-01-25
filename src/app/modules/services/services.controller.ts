@@ -6,16 +6,7 @@ import sendResponse from '../../../shared/sendResponse';
 import { serviceServices } from './services.service';
 
 const createService = catchAsync(async (req: Request, res: Response) => {
-  const data = JSON.parse(req.body.data);
-   // @ts-ignore
-  const base64Data = req?.files?.file?.data?.toString('base64');
-  if (base64Data) {
-     // @ts-ignore
-    data['service_img'] =`data:${req?.files?.file?.mimetype};base64,` + base64Data;
-  } else {
-    data.service_img = '';
-  }
-  const result = await serviceServices.createService(data);
+  const result = await serviceServices.createService(req.body);
   sendResponse(res, {
     success: true,
     message: 'Service created successfully!',
@@ -24,16 +15,8 @@ const createService = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const updateServices = catchAsync(async (req: Request, res: Response) => {
-  const data = JSON.parse(req.body.data);
- // @ts-ignore
-  const base64Data = req?.files?.file?.data?.toString('base64');
-  if (base64Data) {
-     // @ts-ignore
-    data['service_img'] =`data:${req?.files?.file?.mimetype};base64,` + base64Data;
-  } else {
-    data.service_img = '';
-  }
-  const result = await serviceServices.updateServices(req.params.id, data);
+ 
+  const result = await serviceServices.updateServices(req.params.id, req.body);
   sendResponse(res, {
     success: true,
     statusCode: 200,

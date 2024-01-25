@@ -16,18 +16,9 @@ const getProfileInfoByEmail = catchAsync(
 );
 
 const updateProfile = catchAsync(async (req: Request, res: Response) => {
-  const data=JSON.parse(req.body.data )
-   // @ts-ignore
-  const base64Data = req?.files?.file?.data?.toString('base64')
-  if (base64Data) {
-    // @ts-ignore
-    data["profileImg"] = `data:${req?.files?.file?.mimetype};base64,` + base64Data
-  } else {
-   delete data.profileImg 
-  }
     const result = await profileServices.updateProfile(
       req.user,
-      data
+      req.body
     );
     sendResponse(res, {
       success: true,

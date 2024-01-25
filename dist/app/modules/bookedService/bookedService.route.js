@@ -10,6 +10,6 @@ const auth_1 = __importDefault(require("../../middlewares/auth"));
 const bookedService_controller_1 = require("./bookedService.controller");
 const router = express_1.default.Router();
 router.post('/', bookedService_controller_1.bookedController.createBooked);
-router.get('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.USER), bookedService_controller_1.bookedController.getByEmail);
+router.get('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.USER, user_1.ENUM_USER_ROLE.SUPER_ADMIN), bookedService_controller_1.bookedController.getByEmail);
 router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.USER), bookedService_controller_1.bookedController.manageBooking);
 exports.bookedRouter = router;

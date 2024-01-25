@@ -26,18 +26,7 @@ const getProfileInfoByEmail = (0, catchAsync_1.default)((req, res) => __awaiter(
     });
 }));
 const updateProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e;
-    const data = JSON.parse(req.body.data);
-    // @ts-ignore
-    const base64Data = (_c = (_b = (_a = req === null || req === void 0 ? void 0 : req.files) === null || _a === void 0 ? void 0 : _a.file) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.toString('base64');
-    if (base64Data) {
-        // @ts-ignore
-        data["profileImg"] = `data:${(_e = (_d = req === null || req === void 0 ? void 0 : req.files) === null || _d === void 0 ? void 0 : _d.file) === null || _e === void 0 ? void 0 : _e.mimetype};base64,` + base64Data;
-    }
-    else {
-        delete data.profileImg;
-    }
-    const result = yield profile_service_1.profileServices.updateProfile(req.user, data);
+    const result = yield profile_service_1.profileServices.updateProfile(req.user, req.body);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: 200,

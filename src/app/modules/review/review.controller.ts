@@ -24,27 +24,6 @@ const getReview = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-// const getAllServicesForUsers = catchAsync(async (req: Request, res: Response) => {
-//   const filters = pick(req.query, ['searchTerm','minPrice','maxPrice','isAvailable','status','location','categoryId']);
-//   const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
-//   const result = await serviceServices.getAllServicesForUsers(filters,options);
-//   sendResponse(res, {
-//     success: true,
-//     message: 'Service retrived successfully!',
-//     statusCode: httpStatus.OK,
-//     data: result,
-//   });
-// });
-// const getSingleService = catchAsync(async (req: Request, res: Response) => {
-
-//   const result = await serviceServices.getSingleService(req.params.id);
-//   sendResponse(res, {
-//     success: true,
-//     message: 'Servic retrived successfully!',
-//     statusCode: httpStatus.OK,
-//     data: result,
-//   });
-// });
 
 export const reviewController = {
 

@@ -18,18 +18,7 @@ const pick_1 = __importDefault(require("../../../shared/pick"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const blog_service_1 = require("./blog.service");
 const careteBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e;
-    const data = JSON.parse(req.body.data);
-    // @ts-ignore
-    const base64Data = (_c = (_b = (_a = req === null || req === void 0 ? void 0 : req.files) === null || _a === void 0 ? void 0 : _a.file) === null || _b === void 0 ? void 0 : _b.data) === null || _c === void 0 ? void 0 : _c.toString('base64');
-    if (base64Data) {
-        // @ts-ignore
-        data["image"] = `data:${(_e = (_d = req === null || req === void 0 ? void 0 : req.files) === null || _d === void 0 ? void 0 : _d.file) === null || _e === void 0 ? void 0 : _e.mimetype};base64,` + base64Data;
-    }
-    else {
-        data.image = '';
-    }
-    const result = yield blog_service_1.blogService.createBlog(data, req.user);
+    const result = yield blog_service_1.blogService.createBlog(req.body, req.user);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: 200,
@@ -49,18 +38,7 @@ const getAllBlogByAdminEmail = (0, catchAsync_1.default)((req, res) => __awaiter
     });
 }));
 const updateBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _f, _g, _h, _j, _k;
-    const data = JSON.parse(req.body.data);
-    // @ts-ignore
-    const base64Data = (_h = (_g = (_f = req === null || req === void 0 ? void 0 : req.files) === null || _f === void 0 ? void 0 : _f.file) === null || _g === void 0 ? void 0 : _g.data) === null || _h === void 0 ? void 0 : _h.toString('base64');
-    if (base64Data) {
-        // @ts-ignore
-        data["image"] = `data:${(_k = (_j = req === null || req === void 0 ? void 0 : req.files) === null || _j === void 0 ? void 0 : _j.file) === null || _k === void 0 ? void 0 : _k.mimetype};base64,` + base64Data;
-    }
-    else {
-        data.image = '';
-    }
-    const result = yield blog_service_1.blogService.updateBlog(req.user, req.params.id, data);
+    const result = yield blog_service_1.blogService.updateBlog(req.user, req.params.id, req.body);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: 200,

@@ -154,7 +154,14 @@ const getAllServicesForUsers = (filters, options) => __awaiter(void 0, void 0, v
         where: whereConditons,
         include: {
             user: true,
-            category: true,
+            category: {
+                select: {
+                    image: false,
+                    name: true,
+                    id: true,
+                    Services: false,
+                }
+            },
         },
         orderBy: options.sortBy && options.sortOrder
             ? {
@@ -206,10 +213,19 @@ const updateServices = (id, data) => __awaiter(void 0, void 0, void 0, function*
     });
     return result;
 });
+const deleteService = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma.services.delete({
+        where: {
+            id: id,
+        },
+    });
+    return result;
+});
 exports.serviceServices = {
     createService,
     getAllServices,
     getSingleService,
     getAllServicesForUsers,
     updateServices,
+    deleteService,
 };

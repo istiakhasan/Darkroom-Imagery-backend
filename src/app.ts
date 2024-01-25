@@ -8,13 +8,15 @@ import routes from './app/routes';
 
 const app: Application = express();
 app.use(fileUpload())
+// app.use(cors({origin:"http://localhost:3000",credentials:true}));
 app.use(cors({origin:"https://darkroom-imagery-frontend.vercel.app",credentials:true}));
+
 app.use(cookieParser());
 
 //parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.get('', (req, res) => {
+app.get('/', (req, res) => {
   res.send(
     {
       server: 'Welcome to Darkroom Imagery server',

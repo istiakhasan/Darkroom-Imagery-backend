@@ -179,7 +179,15 @@ const getAllServicesForUsers = async (
     where: whereConditons,
     include: {
       user: true,
-      category: true,
+      category: {
+        select:{
+          image:false,
+          name:true,
+          id:true,
+          Services:false
+          ,
+        }
+      },
     },
     orderBy:
       options.sortBy && options.sortOrder
